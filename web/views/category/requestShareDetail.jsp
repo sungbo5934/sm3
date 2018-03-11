@@ -1,20 +1,10 @@
-<%@page import="com.kh.tc.product.model.vo.PageInfo"%>
+<%@page import="com.kh.tc.product.model.vo.product"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	
-	<%@page import="com.kh.tc.product.model.vo.product"%>
-<%@page import="java.util.ArrayList"%>
-	
-<% ArrayList<product> list = (ArrayList<product>) request.getAttribute("list");
-	PageInfo pi = (PageInfo)request.getAttribute("pi");
-	int listCount = pi.getListCount();
-	int currentPage = pi.getCurrentPage();
-	int maxPage = pi.getMaxPage();
-	int startPage = pi.getStartPage();
-	int endPage= pi.getEndPage();
-%>
-
-
+ <!-- 페이지 임포트 -->
+ 
+ <!--  리스트 받아옴 -->
+<% product p = (product) request.getAttribute("p"); %>
 
 <!DOCTYPE html>
 <html>
@@ -463,166 +453,126 @@ thead {
 </style>
 </head>
 <body>
+
 	<%@ include file="../common/header.jsp"%>
 
+<input type='hidden' value='<%=loginUser.getC_code()%>' name='c_code'>
 	<div id="A_Container_Wrap">
 		<div id="A_Container">
 			<div id="A_Contents_L"></div>
 
 			<div id="A_Contents_C">
-
-				<h1>재능요청</h1>
-				<br>
-
-				<div class="sb_contents font_contents2">
-					구매자가 필요한 서비스나 상품을 요청하는 공간입니다.<br> 서비스나 상품을 판매하시려면 재능등록을 하시기
-					바랍니다.
-
-				</div>
-				<br>
-				<!-- s: 판매관리 - 1:1공유문의 - 리스트  -->
-				<div class="board_search font_subject">
-
-					<br>
-				 
-					<!-- 검색 -->
-					<form id="searchForm" name="searchForm" method="post" align="right">
-						<p>
-							<select style="width: 82px;" name="keyword_option">
-								<option id="p_name" value="하이">공유명</option>
-								<option id="c_code" value="2">아이디</option>
-							</select> 
-							<input type="text" id="search" value=""> 
-						 
-							 <a id="searchBtn" value="search" onclick="search1()">검색</a>
-						</p>
-					</form>
-					
-					 
-					
-					<script>
-					function search1(){
-						//var inputVal= $("#search").val()
-						var p_name = $("#p_name").val();
-						//p_name+=inputVal
-						
-						var c_code = $("#c_code").val();
-						//c_code+=inputVal
-						
-					if(p_name == p_name){
-						location.href="<%=request.getContextPath() %>/searchRequestEngine.do?p_name="+p_name;
-					}else if(c_code==c_code){
-						location.href="<%=request.getContextPath() %>/searchRequestEngine.do?c_code="+c_code;
-					}
-						
-					}
-					
-					</script>
-				 
-				 
-
- 
-			<div class="tableArea">
-					<table class="serviceTable inquiry_list" cellpadding="0"
-						cellspacing="0">
-						<colgroup>
-							<col style="width: 6%">
-							<col style="">
-							<col style="width: 13%">
-							<col style="width: 20%">
-							<col style="width: 10%">
-						</colgroup>
-						<thead>
-							<tr>
-								<th>NO</th>
-								<th>재능요청명</th>
-								<th>아이디</th>
-								<th>등록시간</th>
-								<th>희망가격</th>
-							</tr>
-						</thead>
-						<tbody>
-				 
+<div id="A_Contents_C">
+              			 
+<h3><%-- p.getP_name() --%> </h3>
+             <table class="request_view" cellspacing="1" border="1">
+                <colgroup>
+                    <col style="width:100px;">
+                    <col style="width:;">
+                    <col style="width:80px;">
+                    <col style="width:;">
+                    <col style="width:100px;">
+                    <col style="width:;">
+                    <col style="width:100px;">
+                    <col style="width:;">
+                </colgroup>
+							
+							
 				
-						<tr>
-						<% for(product p : list) {%>
-						<td><%= p.getP_code() %></td>
-						<input type="hidden" value="<%= p.getP_code() %>"> 
-								<td class="title">
-								 
-								<%= p.getP_name() %>
-								<p>[재능&gt;교육&amp;레슨&gt;과외]</p>
-								<a href="#"></a></td>
-								<td><%= p.getC_code() %></td>
-								<td><%= p.getP_date() %></td>
-								<td><%= p.getP_price() %></td>
-							</tr>
-						<%} %>
-							 </div>
-							 
-			
-							 
-							 
-							 
-<script>
-		$(function(){
-			$(".tableArea td").mouseenter(function(){
-				$(this).parent().css({"cursor":"pointer"});
-			}).click(function(){
-				var num = $(this).parent().children("input").val();
-				location.href="<%=request.getContextPath() %>/searchOneRequest.do?num="+num;
-			});
-		});		
-	</script>
 
- 			 
-				 
-
-						</tbody>
-					</table>
-					<!-- e: 판매관리 - 1:1공유문의 - 리스트  -->
-					<div class="list_page">
-						<a href="?page=1&amp;" class="first_btn">처음</a><a
-							href="?page=1&amp;" class="first2_btn">이전</a>
-						<ul>
-							 
-						</ul>
-						<a href="?page=7&amp;" class="last2_btn">다음</a><a
-							href="?page=11&amp;" class="last_btn">맨뒤</a>
-					</div>
-					
-<div class="pagingArea" align="center">
-			<button onclick="location.href='<%= request.getContextPath() %>/searchRequest.do?currentPage=1'"><<</button>
-			<% if(currentPage <=1 ){ %>
-			<button disabled><</button>
-			<%}else{ %>
-			<button onclick="location.href='<%= request.getContextPath()%>/searchRequest.do?currentPage=<%= currentPage-1 %>'"><</button>
-			<%} %>
-			<% for(int p=startPage; p<=endPage; p++){
-					if(p == currentPage){
-				%>
-					<button disabled><%= p %></button>
-				<%}else{ %>
-					<button onclick="location.href='<%= request.getContextPath()%>/searchRequest.do?currentPage=<%= p%>'"><%= p %></button>
-				<%} %>				
-			<%} %>			
-			
-			<% if(currentPage >= maxPage){ %>
-			<button disabled>></button>
-			<%}else{ %>
-			<button onclick="location.href='<%= request.getContextPath()%>/searchRequest.do?currentPage=<%= currentPage +1%>'">></button>
-			<%} %>
-			<button onclick="location.href='<%= request.getContextPath() %>/searchRequest.do?currentPage=<%= maxPage %>'">>></button>
-		</div>
+                <tr>
+                    <th colspan="8" class="view_tit">sri04184<span class="cate">[재능>교육&레슨>전공과목]</span><span class="hit">조회수 : 16회</span></th>
+                </tr>
+                <tr>
+                <input type="hidden" value="pcode자리 ">
+                    <th>등록시간</th>
+                    	<td>pdate 자리 </td>
+                    <th>판매자명</th>
+                    	<td>c코드자리</td>
+                    	
+                   <td></td>
+                    <th>요청마감 </th>
+                    <td>2018-05-05</td>
+                    <th>희망금액</th>
+                    <td>프라이스 자리</td>
+                    	괄호 닫는자리
+                </tr>
+                <tr>
+                	<td colspan="8" class="con">
+                        혼돈스러운 내면에 양식을 찾아드려서 정리될 수 있게 해드리겠습니다. <br><br>철학 및 인문학 교육 (오프라인) - 1회 25000원<br>오프라인 상담 - 1회 20000원<br>카카오톡/페이스북/트위터 상담 - 1회 5000원<br><br>
+                    </td>
+                </tr>
+            </table>
 	
-	<div class="btn_joinL">
-						<a href="/p/views/category/requestShareForm.jsp"><span>재능요청하기</span></a>
-					</div>
+	
+            <h3 class="bor_none m_top20 m_bottom20">공유요청 댓글</h3>
+						<div class="replyArea">
+      <div class="replyWriteArea">
+         <table align="center">
+            <tr>
+               <td>
+                  <textarea rows="3" cols="80" id="replyContent"></textarea>
+               </td>
+               <td>
+                  <button id="addReply">등록 </button>
+               </td>
+            </tr>
+         </table>
+      </div>
+      <div id="replySelectArea">
+         <table id="replySelectTable" border="1" align="center"> 
+         </table>
+      </div>
+   </div>
  
+ <script>
+      $(function(){
+         $("#addReply").click(function(){
+          
+            var content = $("#replyContent").val();
+         //writer
+            console.log("content : "+content);
+            
+            $.ajax({
+               url:"/p/insertReply.do",
+               data:{content:content},
+               type:"post",
+               success:function(data){
+   
+              	var $replySelectTable = $("#replySelectTable");
+              	$replySelectTable.html('');
+               
+              	for(var key in data){
+              		var $tr = $("<tr>");
+              		//var $writerTd = $("<td>").text(data[key].bWriter).css("width", "100px");
+              		 
+              		var $contentTd= $("<td>").text(data[key].reply_content).css("width", "600px");
+              		//var $dateTd = $("<td>").text(data[key].bdate).css("width", "200px");
+              		
+              		//$tr.append($writerTd);
+              		$tr.append($contentTd);
+              		// $tr.append($dateTd);
+              		$replySelectTable.append($tr);
+              	}
+               },
+               error:function(msg){
+                  alert(msg);
+               }
+            });
+         });
+      });
+   </script>
+
+ 
+		<div class="btn_joinL">
+							
+		<a href="#" onclick="self.location.href = '?gonguMode=List&intSeq=&';"><span >목록</span></a>
+						</div>
+
+
 				</div>
-
-
-
+				</div>
+				</div>
 
 				<br><br><br><br>
 				<%@ include file="../common/footer.jsp"%>

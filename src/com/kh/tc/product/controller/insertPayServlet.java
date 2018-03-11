@@ -1,6 +1,7 @@
 package com.kh.tc.product.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,8 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
- 
-import com.kh.tc.product.model.service.productService;
+
+import com.google.gson.Gson;
+import com.kh.tc.product.model.service.ProductService;
 import com.kh.tc.product.model.vo.Pay;
 
  
@@ -42,24 +44,15 @@ public class insertPayServlet extends HttpServlet {
 	 pay.setPay_price(pay_price);
 	 pay.setHowtopay(howtopay);
 	  
-		request.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html; charset=UTF-8"); 
-		 
-		int result= new ProductService().insertPay(pay);
+		// arrayList에 결제 정보 담아 보냄
+	 	ArrayList<Pay> list = new ProductService().insertPay(pay);
 		
 		 String page="";
 			
-		 System.out.println(result);
+		 System.out.println(list);
 		 
-		 if(result > 0){
-			 request.setAttribute("result", result);
-			 page="views/mypage/buy.jsp";
-		 }else{
-			 page="views/common/errorPage.jsp";
-			 request.setAttribute("msg", "���� ��� ����");
-		 }
-		 RequestDispatcher view = request.getRequestDispatcher(page);
-		 view.forward(request, response);
+		 response.setContentType("appliction/json");
+		 new Gson().toJson(list, response.getWriter());
 		
 	}
 

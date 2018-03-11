@@ -1,5 +1,5 @@
 package com.kh.tc.product.model.dao;
-
+   
 import static com.kh.tc.common.JDBCTemplet.close;
 
 import java.io.FileReader;
@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
-
+ 
 import com.kh.tc.product.model.vo.Pay;
 import com.kh.tc.product.model.vo.product;
 
@@ -73,11 +73,11 @@ public class ProductDao {
 			pstmt.setString(6, p.getPhone());
 			pstmt.setString(7, p.getP_status());
 			pstmt.setInt(8, p.getP_price());
-			pstmt.setString(9, p.getC_code());
+			pstmt.setInt(9, p.getC_code());
 			pstmt.setString(10, p.getP_simplecontent());
 			pstmt.setString(11, p.getP_deadline());
 			pstmt.setString(12, p.getOption());
-			pstmt.setString(13, p.getC_code());
+			pstmt.setInt(13, p.getC_code());
 			pstmt.setString(14, p.getSavePath());
 			pstmt.setString(15, p.getOriginFiles());
 			pstmt.setString(16, p.getSaveFiles());
@@ -170,7 +170,7 @@ public class ProductDao {
 					p.setPhone(rset.getString("phone"));
 					p.setP_status(rset.getString("p_status"));
 					p.setP_price(rset.getInt("p_price"));
-					p.setC_code(rset.getString("c_code"));
+					p.setC_code(rset.getInt("c_code"));
 					p.setP_date(rset.getDate("p_date"));
 					p.setAd_code(rset.getInt("ad_code"));
 					p.setStar_point(rset.getFloat("star_point"));
@@ -203,7 +203,7 @@ public class ProductDao {
 					p.setPhone(rset.getString("phone"));
 					p.setP_status(rset.getString("p_status"));
 					p.setP_price(rset.getInt("p_price"));
-					p.setC_code(rset.getString("c_code"));
+					p.setC_code(rset.getInt("c_code"));
 					p.setP_date(rset.getDate("p_date"));
 					p.setAd_code(rset.getInt("ad_code"));
 					p.setStar_point(rset.getFloat("star_point"));
@@ -236,7 +236,7 @@ public class ProductDao {
 					p.setPhone(rset.getString("phone"));
 					p.setP_status(rset.getString("p_status"));
 					p.setP_price(rset.getInt("p_price"));
-					p.setC_code(rset.getString("c_code"));
+					p.setC_code(rset.getInt("c_code"));
 					p.setP_date(rset.getDate("p_date"));
 					p.setAd_code(rset.getInt("ad_code"));
 					p.setStar_point(rset.getFloat("star_point"));
@@ -327,33 +327,97 @@ public class ProductDao {
 		return result;
 	}
 
-	public int insertRequest(Connection con, product p) {
-		PreparedStatement pstmt = null;
-		int result = 0;
+	
 
-		String query = prop.getProperty("insertRequest");
+ 
 
-		// 결제코드
-		System.out.println("dao 성공");
-		System.out.println(p);
-		System.out.println(query);
-
-		try {
-			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, p.getP_name());
-			pstmt.setInt(2, p.getP_price());
-			pstmt.setString(3, p.getP_simplecontent());
-			pstmt.setString(4, p.getReq_status());
-
-			result = pstmt.executeUpdate();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close(pstmt);
-
-		}
-		return result;
+	public int insertReply(Connection con, product p) {
+	PreparedStatement pstmt = null;
+	int result = 0;
+	
+	String query= prop.getProperty("insertReply");
+	
+	try {
+		pstmt = con.prepareStatement(query);
+		pstmt.setString(1, p.getReply_content());
+		result = pstmt.executeUpdate();
+	
+	} catch (SQLException e) {
+		e.printStackTrace();
+	} finally {
+		close(pstmt);
 	}
 
+	return result;
+}
+
+	public ArrayList<product> selectReplyList(Connection con, int c_code) {
+		 System.out.println("여기까지 옴");
+	 
+	PreparedStatement pstmt= null;
+	ResultSet rset = null;
+	ArrayList<product> replyList = null;
+	
+	String query= prop.getProperty("selectReplyList");
+		
+	c_code=1;
+	try {
+		pstmt = con.prepareStatement(query);
+		pstmt.setInt(1, c_code);
+		System.out.println(c_code);
+		rset = pstmt.executeQuery();
+		replyList = new ArrayList<product>();
+		
+		while(rset.next()) {
+			product p= new product();
+			p.setReply_content(rset.getString("reply_content"));
+		 
+			replyList.add(p);
+		}
+	} catch (SQLException e) {
+		e.printStackTrace();
+	} finally {
+		close(pstmt);
+		close(rset);
+	}
+	
+	
+	return replyList;
+}
+
+	 
+	public ArrayList<Pay> searchPay(Connection con, String ac_code) {
+		 System.out.println("여기까지 옴");
+ 
+			PreparedStatement pstmt= null;
+			ResultSet rset = null;
+			ArrayList<Pay> list = null;
+			
+			String query= prop.getProperty("searchPay");
+			System.out.println(query);
+			try {
+				pstmt = con.prepareStatement(query);
+				pstmt.setString(1, ac_code);
+				
+				System.out.println(ac_code);
+				rset = pstmt.executeQuery();
+				list = new ArrayList<Pay>();
+				
+				while(rset.next()) {
+					Pay pay= new Pay();
+					
+					// 여기부터가 문제.
+					pay.setPay_price(rset.getInt("pay_price"));
+			  
+					list.add(pay);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				close(pstmt);
+				close(rset);
+			}
+			System.out.println("dao" +list);
+			return list;
+}
 }

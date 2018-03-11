@@ -1,9 +1,10 @@
 package com.kh.tc.product.model.service;
+ 
 import static com.kh.tc.common.JDBCTemplet.*;
 
 import java.sql.Connection;
 import java.util.ArrayList;
-
+ 
 import com.kh.tc.product.model.dao.ProductDao;
 import com.kh.tc.product.model.vo.Pay;
 import com.kh.tc.product.model.vo.product;
@@ -71,27 +72,47 @@ public class ProductService {
 		return product;
 	}
 
-	public int insertPay(Pay pay) {
-		int result= 0;
+	public ArrayList<Pay> insertPay(Pay pay) {
+		ArrayList<Pay> list =null;
+		
 		Connection con = getConnection();
 		
-		result = new ProductDao().insertPay(con, pay);
+		int result = new ProductDao().insertPay(con, pay);
+		if(result>0){
+			
+			list= new ProductDao().searchPay(con, pay.getAc_code());
+			commit(con);
+		}else{
+			rollback(con);
+		}
+		
 		close(con);
 		
-		 System.out.println(result);
-		return result;
+		 System.out.println(list);
+		return list;
 	}
 
-	public int insertRequest(product p) {
-			int result= 0;
-			Connection con = getConnection();
-			
-			result = new ProductDao().insertRequest(con, p);
-			System.out.println("서비스");
-			System.out.println(result);
-			close(con);
-		 
-		return result;
-	}
+	
+	public ArrayList<product> insertReply(product p) {
+	 
+	Connection con = getConnection();
+	ArrayList<product> replyList= null;
+	int result = new ProductDao().insertReply(con, p);
+	
+	if(result >0) {
+		commit(con);
+		replyList = new ProductDao().selectReplyList(con, p.getC_code());
+		
 
+		System.out.println("서비스 되돌아 오나");
+		System.out.println(replyList);
+		
+	}else {
+		rollback(con);
+	}
+	close(con);
+	return replyList;
+}
+
+	
 }

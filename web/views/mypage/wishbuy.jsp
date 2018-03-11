@@ -8,6 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <title>My Page</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <style>
 
 #A_Container_L{ 
@@ -92,7 +93,9 @@
 	   <ul class="gumai-wrap">
 	   <% if(cart != null){ %>
 	   	<li>
-	   		<img src="" style="float:left">
+	   		<input type="hidden" id="cart1" value="1">
+	   		<!-- 여기를 DB에서 불러와야 함 -->
+	   		<img src="Pimages/city1.PNG" style="float:left">
    		
    		 
    			<p style="color:skyblue; float:left; margin-top:5px; margin-left:15px;">
@@ -113,17 +116,36 @@
 	   	<li>
 			<h3>공유바구니</h3>
    			<p><%= cart.getP_date() %>  </p>
-   			<input class="basketBtn1" type="button" value="주문" style="padding-bottom:10px;">
-   			<input class="basketBtn2" type="button" value="삭제" style="padding-bottom:10px;">
+   			 
+   			
+   			<input class="basketBtn1" type="button" value="주문" onclick="purchase()" style="padding-bottom:10px;">
+   			
+   			<input class="basketBtn2" type="button" value="삭제" onclick="delete1( )" style="padding-bottom:10px;">
 		</li>
 	
 	  	      <%}else{ %>
 	  	      비어 있음
 	  	      
 	<%} %>
+
 	   </ul>
-   
+    <a href="/p/views/product/selldetail.jsp"><dd>주문하기</dd></a>
    </div>
+<script>
+	function purchase(){
+		location.href="/p/views/product/selldetail.jsp";
+	}
+	
+	</script>
+	<script>
+	function delete1(){
+		var num=$("#cart1").val();
+		location.href="<%=request.getContextPath()%>/deleteCart.do?num="+num;		
+		 
+		
+	}
+	</script>
+
 
 
 

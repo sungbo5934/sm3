@@ -42,17 +42,11 @@ a { color:#666666;}
              
      <input type="hidden" id="Y" value="Y">
      
-         <a href="/p/views/category/requestShare.jsp"><li><p>재능요청</p></li></a>
+         <a href="/p/views/category/requestShareForm.jsp"><li><p>재능요청</p></li></a>
        
     
      
-        <!--  <script>
-         function request(){
-        	 var req_status= $("#Y").val();  
-        	 location.href="<%=request.getContextPath() %>/searchRequest.do?req_status="+req_status;
-              
-          }
-         </script>-->
+        
       
    </ul>
 
@@ -60,8 +54,18 @@ a { color:#666666;}
          <dl>
                <a href="#"><dt>구매관리</dt></a>
                  <a href="/p/views/mypage/buy.jsp"><dd>구매내역</dd></a>
-                 <a href="/p/views/mypage/wishbuy.jsp"><dd>공유바구니</dd></a>
+  
+                 <input type="hidden" id="idx" value="1">
+                  <a onclick="cart()" ><dd>공유바구니</dd></a>
+ 
          </dl>
+         
+         	<script>
+                   function cart() {
+                	   var num = $("#idx").val();  
+                       location.href="<%=request.getContextPath() %>/wishbuy.do?num="+num;
+                   }
+                   </script>
          
          <dl>
                <a href="#"><dt>판매관리</dt></a>
