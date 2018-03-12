@@ -13,7 +13,7 @@ public class product {
 	private String phone;
 	private String p_status;
 	private int p_price;
-	private String c_code;
+	private int c_code;
 	private Date p_date;
 	private int ad_code;
 	private float star_point;
@@ -23,7 +23,8 @@ public class product {
 	private String originFiles;
 	private String saveFiles;
 	private String req_status;
-	
+	private String reply_content;
+ 
 	
 	
 	
@@ -210,7 +211,7 @@ public class product {
 
 
 
-	public String getC_code() {
+	public int getC_code() {
 		return c_code;
 	}
 
@@ -218,7 +219,7 @@ public class product {
 
 
 
-	public void setC_code(String c_code) {
+	public void setC_code(int c_code) {
 		this.c_code = c_code;
 	}
 
@@ -369,7 +370,7 @@ public class product {
 
 
 	public product(int p_code, String p_type, int cate_code, String p_name, String p_content, String p_simplecontent,
-			int p_share_count, String phone, String p_status, int p_price, String c_code, Date p_date, int ad_code,
+			int p_share_count, String phone, String p_status, int p_price, int c_code, Date p_date, int ad_code,
 			float star_point, String option, String p_deadline, String savePath, String originFiles, String saveFiles,
 			String req_status) {
 		super();
@@ -393,6 +394,22 @@ public class product {
 		this.originFiles = originFiles;
 		this.saveFiles = saveFiles;
 		this.req_status = req_status;
+	}
+
+
+
+
+
+	public String getReply_content() {
+		return reply_content;
+	}
+
+
+
+
+
+	public void setReply_content(String reply_content) {
+		this.reply_content = reply_content;
 	}
 
 

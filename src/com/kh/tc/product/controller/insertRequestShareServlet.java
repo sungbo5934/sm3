@@ -1,14 +1,16 @@
 package com.kh.tc.product.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.kh.tc.product.model.service.ProductService;
+ 
+import com.kh.tc.product.model.service.requestService;
 import com.kh.tc.product.model.vo.product;
 
 @WebServlet("/insertRequest.do")
@@ -41,18 +43,25 @@ public class insertRequestShareServlet extends HttpServlet {
 		System.out.println(p_simplecontent);
 		System.out.println(req_status);
 
-		int result = new ProductService().insertRequest(p);
+		int result= new requestService().insertRequest(p);
 
-		// String page = "";
-		// if (result > 0) {
-		// page = "views/category/requestShare.jsp";
-		// response.sendRedirect(page);
-		// } else {
-		// page = "views/common/errorPage.jsp";
-		// request.setAttribute("msg", "fail");
-		// }
-		// RequestDispatcher view = request.getRequestDispatcher(page);
-		// view.forward(request, response);
+		System.out.println("서블릿"+result);
+		
+		
+		// 여기가 왜 안 되지?
+		String page = "";
+		 if (result > 0 ) {
+			 response.sendRedirect(request.getContextPath() + "/searchRequest.do");
+ 
+		 } else {
+		request.setAttribute("msg", "fail");
+		request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
+		
+		 }
+		 
+		 
+		 RequestDispatcher view = request.getRequestDispatcher(page);
+		 view.include(request, response);
 
 	}
 

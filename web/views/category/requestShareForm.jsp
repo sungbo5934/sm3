@@ -404,50 +404,42 @@ $(function() {
 
          <h2 class="bor_none m_top20">재능 카테고리 선택</h2>
       
-
-<form name="frm" action="" method="post">
-
+<form action="<%=request.getContextPath()%>/insertProduct" method='post' encType='multipart/form-data' onsubmit="return formcheck()" >
+  
    <ul class="register_cate">
-      <li>
-   <select name="cate1" class="select">
-      <option value="0">1차 카테고리 선택</option>
-      <option value="1000000000">시간</option>
-   </select>
-</li>
-   
+      	<li id="category" class='cate1'><select id='category1'
+					class="btn btn-default" name='category'>
+						<option>1차 카테고리 선택</option>
+						<option>시간</option>
+						<option>재능</option>
+						<option>물건</option>
+						<option>공간</option>
+						<option>차량</option>
+				</select></li>
 
-      <li>
-   <select name="cate2" class="select">
-      <option value="">2차 카테고리 선택</option>
-      <option>시간</option>
-   </select>
-</li>
+				<li id="category" class='cate2'><select id='category2'
+					class="btn btn-default" name='category'>
+						<option>2차 카테고리 선택</option>
+						<option>차량</option>
+				</select></li>
 
+				<li id="category" class='cate3'><select id='category3'
+					class="btn btn-default" name='category'>
+						<option>3차 카테고리 선택</option>
+						<option>차량</option>
+				</select></li>
 
-   
-   <li>
-   <select name="cate3" class="select">
-      <option value="">3차 카테고리 선택</option>
-      <option>시간</option>
-   </select>
-
-</li>
-
-
-   
-   <li>
-   <select name="cate4" class="select">
-      <option value="">4차 카테고리 선택</option>
-      <option>시간</option>
-   </select>
-</li>
+				<li id="category" class='cate4'><select id='category4'
+					class="btn btn-default" name='category'>
+						<option>4차 카테고리 선택</option>
+						<option>차량</option>
+				</select></li>
 
 </ul>
 </form>
  
 	<form action="<%=request.getContextPath()%>/insertRequest.do" method="post">
-	
-<form name="chkform" method="post" action="<%=request.getContextPath()%>/insert.bo">
+	 
   <input name="g_category" type="hidden" value="">
   <input name="g_id" type="hidden" value="dkswnsdyd">
             <h2 class="bor_none m_top20">재능 기본정보 입력</h2>
@@ -465,11 +457,16 @@ $(function() {
             </tr>
             <tr>
             <!-- 요청선택 -->
-            <input type="hidden" name="req_status" value="y">
+            <input type="hidden" name="req_status" value="Y">
             </tr>
                 <tr>
-               <th>재능요청마감일 *</th>
-               <td><input class="w400px datepicker hasDatepicker" type="text" name="p_deadline"  id="dp1519116021384"></td>
+               <th class="active">재능요청마감일 *</th>
+                
+					<td><input class="btn btn-default" type="date" name="g_date"
+						id="dp1520352382982">&nbsp; 
+						<input class="btn btn-default"
+						type="time" name="g_time" id="tp1520352382989"> </td>
+			                
             </tr>
                 <tr>
                <th>희망가격 *</th>
@@ -488,21 +485,71 @@ $(function() {
          </div>
 </form>
 
-<script language="javascript">
-<!--
-
- //  function chk(){
-    if ( document.chkform.g_category.value == "" ) { alert("카테고리를 선택해주세요");  return false; }
-    if ( document.chkform.g_title.value == "" ) { alert("공유명을 입력해주세요"); document.chkform.g_title.focus(); return false; }
-    if ( document.chkform.g_date.value == "" ) { alert("공유요청마감일을 입력해주세요"); document.chkform.g_date.focus(); return false; }
-      if ( document.chkform.g_customerMoney.value == "" ) { alert("희망가를 입력해주세요"); document.chkform.g_customerMoney.focus(); return false; }
-    if ( document.chkform.g_Memo.value == "" ) { alert("공유상세설명을 입력해주세요"); document.chkform.g_Memo.focus(); return false; }
-
-
-    document.chkform.submit();
-   }
-
-//-->
+	<script type="text/javascript">
+	/* 폼 정규화 처리 */
+	function formcheck(){
+		
+		var $cate1 = $("#category1 option:selected");
+		var $cate2 = $("#category2 option:selected");
+		var $cate3 = $("#category3 option:selected");
+		var $cate4 = $("#category4 option:selected");
+		
+		var $title = $("#max");
+		
+		var $date = $("#dp1520352382982");
+		var $time = $("#tp1520352382989");
+	
+		var $sellstate= $("input[name=sellstate]");
+		
+		var $titleImg =$("#titleImg");
+		
+		var $price = $("#price");
+		
+		var $sharecount = $("#sharecount");
+		
+		
+		
+		 if($cate1.val()=="1차 카테고리 선택"||$cate2.val()=="2차 카테고리 선택"||$cate3.val()=="3차 카테고리 선택"||$cate4.val()=="4차 카테고리 선택"){
+			alert("카테고리를 선택하세요");
+			$cate1.focus();
+			return false;
+		}else if($title.val()==""){
+			alert("재능명을 입력하세요");
+			 $title.focus();
+			 return false;
+		}else if($date.val()==""){
+			alert("마감일을 정하세요");
+			$date.focus();
+			return false;
+		}else if($time.val()==""){
+			alert("마감시간을 정하세요");
+			$time.focus();1
+			return false;
+		}else if(!$sellstate.is(":checked")){
+			alert("판매상태를 체크하세요");
+			$sellstate.focus();
+			return false;
+		}else if($titleImg.attr('src')==null){
+			alert("대표이미지를 선택하세요");
+			$("#thumbnail1").focus();
+			return false; 
+		}else if($price.val()==""){
+			alert("기본 가격을 입력하세요");
+			$("#price").focus();
+			return false;
+		}else if($sharecount.val()==""){
+			alert("공유가능 횟수를 입력하세요");
+			$("#sharecount").focus();
+			return false;
+		}
+			
+			$("#editor").text(CKEDITOR.instances.editor.getData());
+			
+			
+			return true;
+		
+		
+	} 
 </script>
 
     

@@ -223,8 +223,33 @@ margin-left:450px;
          </div>
       </div>
       <div class="dropdown">
-      <button class="dropbtn" onclick="location.href='/p/views/category/requestShare.jsp'">공유요청</button>
+       <input type="hidden" id="Y" value="Y">
+      
+      
+      
+      <button class="dropbtn" onclick="request()">재능요청</button>
+        
+      <script>
+         function request(){
+        	 var req_status= $("#Y").val();  
+        	 location.href="<%=request.getContextPath() %>/searchRequest.do?req_status="+req_status;
+              
+          }
+         </script>
+       
+       
+       
+       
+       
         </div>
+        
+        
+        
+        
+        
+        
+        
+        
       <div class="dropdown">
         <button class="dropbtn" onclick="location.href='/p/views/community/FAQ.jsp'">커뮤니티</button>
       </div>

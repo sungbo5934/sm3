@@ -84,7 +84,8 @@
                   <input type="hidden" name="sel2" id="sel2" value="">
                   <input type="hidden" name="ea" id="ea" value="1">
                   <input type="hidden" name="idx" value="2171">
-
+				<input type="hidden" id="idx" value="1">
+				
                     <span class="bgff4b5c" onclick="purchase()" >주문하기</span>
 
                    
@@ -95,6 +96,7 @@
                           
                    }
                    </script>
+                   
                     <a href="#" id="modaltrigger3"><span>문의하기</span></a>
                      <span class="bg979797" onclick="cart()" >공유바구니</span>
 

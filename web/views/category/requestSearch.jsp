@@ -6,12 +6,7 @@
 <%@page import="java.util.ArrayList"%>
 	
 <% ArrayList<product> list = (ArrayList<product>) request.getAttribute("list");
-	PageInfo pi = (PageInfo)request.getAttribute("pi");
-	int listCount = pi.getListCount();
-	int currentPage = pi.getCurrentPage();
-	int maxPage = pi.getMaxPage();
-	int startPage = pi.getStartPage();
-	int endPage= pi.getEndPage();
+	 
 %>
 
 
@@ -486,38 +481,19 @@ thead {
 					<br>
 				 
 					<!-- 검색 -->
-					<form id="searchForm" name="searchForm" method="post" align="right">
+					<form  method="post" align="right">
 						<p>
 							<select style="width: 82px;" name="keyword_option">
 								<option id="p_name" value="하이">공유명</option>
 								<option id="c_code" value="2">아이디</option>
 							</select> 
 							<input type="text" id="search" value=""> 
-						 
 							 <a id="searchBtn" value="search" onclick="search1()">검색</a>
+							 
 						</p>
 					</form>
 					
-					 
-					
-					<script>
-					function search1(){
-						//var inputVal= $("#search").val()
-						var p_name = $("#p_name").val();
-						//p_name+=inputVal
-						
-						var c_code = $("#c_code").val();
-						//c_code+=inputVal
-						
-					if(p_name == p_name){
-						location.href="<%=request.getContextPath() %>/searchRequestEngine.do?p_name="+p_name;
-					}else if(c_code==c_code){
-						location.href="<%=request.getContextPath() %>/searchRequestEngine.do?c_code="+c_code;
-					}
-						
-					}
-					
-					</script>
+				 
 				 
 				 
 
@@ -590,30 +566,7 @@ thead {
 						<a href="?page=7&amp;" class="last2_btn">다음</a><a
 							href="?page=11&amp;" class="last_btn">맨뒤</a>
 					</div>
-					
-<div class="pagingArea" align="center">
-			<button onclick="location.href='<%= request.getContextPath() %>/searchRequest.do?currentPage=1'"><<</button>
-			<% if(currentPage <=1 ){ %>
-			<button disabled><</button>
-			<%}else{ %>
-			<button onclick="location.href='<%= request.getContextPath()%>/searchRequest.do?currentPage=<%= currentPage-1 %>'"><</button>
-			<%} %>
-			<% for(int p=startPage; p<=endPage; p++){
-					if(p == currentPage){
-				%>
-					<button disabled><%= p %></button>
-				<%}else{ %>
-					<button onclick="location.href='<%= request.getContextPath()%>/searchRequest.do?currentPage=<%= p%>'"><%= p %></button>
-				<%} %>				
-			<%} %>			
-			
-			<% if(currentPage >= maxPage){ %>
-			<button disabled>></button>
-			<%}else{ %>
-			<button onclick="location.href='<%= request.getContextPath()%>/searchRequest.do?currentPage=<%= currentPage +1%>'">></button>
-			<%} %>
-			<button onclick="location.href='<%= request.getContextPath() %>/searchRequest.do?currentPage=<%= maxPage %>'">>></button>
-		</div>
+				 
 	
 	<div class="btn_joinL">
 						<a href="/p/views/category/requestShareForm.jsp"><span>재능요청하기</span></a>

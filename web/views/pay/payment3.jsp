@@ -1,5 +1,8 @@
+<%@page import="com.kh.tc.product.model.vo.Pay"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -68,6 +71,10 @@ img{
 width:150px;
 height:100px;
 }
+
+.payment{
+display:none;
+}
  
 </style>
 </head>
@@ -96,7 +103,54 @@ height:100px;
 </tr>
 </table>
 
-<table style="width:95%;" class="table table-bordered" >
+<button id="payDetail" onclick="payment()">주문 내역 상세보기</button>
+<input type="hidden" id="ac_code" value="merchant_1520560035018">
+<div id="replySelectArea">
+         <table id="rst" border="1" align="center"> 
+         
+         </table>
+      </div>
+      
+<script>
+function payment(){
+	$(".payment").toggle();
+}
+
+$(function(){
+    $("#payDetail").click(function(){
+    	var ac_code=$("#ac_code").val();
+    	
+       $.ajax({
+          url:"/p/searchPay.do",
+          data:{"ac_code": ac_code},
+          type:"get",
+          
+          // 데이터 받아옴.
+          success:function(data){
+         	var $rst = $("#rst");
+         	$rst.html('');
+          
+         	for(var key in data){
+         		var $tr = $("<tr>");
+        
+         		var $contentTd= $("<td>").text(data[key].reply_content).css("width", "600px");
+         		$tr.append($contentTd);
+         		$rst.append($tr);
+         	}
+          },
+          error:function(msg){
+             alert(msg);
+          }
+       });
+    });
+ });
+
+</script>
+ 
+ 
+
+
+<table class="payment" style="width:95%;" class="table table-bordered" >
    <colgroup>
        <col style="width:40%;">
           <col style="width:60%;">
@@ -104,6 +158,11 @@ height:100px;
       </colgroup>
          
     </colgroup>
+    
+    
+      
+    
+    
       <tbody><tr>
          <th><p align="center">입금은행</p></th>
          <td>농협중앙회</td>
@@ -122,7 +181,7 @@ height:100px;
       </tr>
    </tbody></table>
 
-  <table style="width:95%;" class="table table-bordered">
+  <table class="payment" style="width:95%;" class="table table-bordered">
      <colgroup>
          <col style="width:40%;">
           <col style="width:25%;">
@@ -161,13 +220,20 @@ height:100px;
          <col style="">
     
   </colgroup>
-
+<hr>
       <div class="order_button">
-             <button><a href="/p/views/member/myPage.jsp" class="btn btn-info">확인</a></button>
+             <button><a href="/p/views/member/myPage.jsp" align="center"; class="btn btn-info">확인</a></button>
           </div>
           </div>
           </div>
+          
+          
+          
+          
           </div>
+ 
+ 
+ 
  
 </body>
 </html>
