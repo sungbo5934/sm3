@@ -36,9 +36,6 @@ public class StarUpdateServlet extends HttpServlet {
 		String userId = request.getParameter("userId");
 		String receveId =  URLEncoder.encode(request.getParameter("receveId"),"UTF-8");
 		
-		System.out.println("servlet : "+ userId);
-		System.out.println("servlet : "+ receveId );
-		
 		int result = new MessageService().updateStarCheck(userId, receveId); 
 		
 		response.setContentType("application/json");

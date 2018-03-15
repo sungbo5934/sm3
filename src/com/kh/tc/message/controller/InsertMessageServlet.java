@@ -29,16 +29,22 @@ public class InsertMessageServlet extends HttpServlet {
 	      String receveId = request.getParameter("receveId");
 	      String userId = request.getParameter("userId");
 	      
-	      System.out.println("ser m"+msgContent);
-	      System.out.println("ser r"+receveId);
-	      System.out.println("ser U"+userId);
+	      System.out.println("시발 들어 왔냐 : "+ msgContent);
 	      
-	      ArrayList<Message> meList = new MessageService().insertMsg(msgContent, userId, receveId);
+	      Message m = new Message();
+	      m.setMsgContent(msgContent);
+	      m.setcCode(userId);
+	      m.setReceveCode(receveId);
 	      
-	      response.setContentType("application/json");
-		  response.setCharacterEncoding("UTF-8"); 
-		  
-		  new Gson().toJson(meList, response.getWriter());
+	      if(msgContent != ""){
+	    	  int result = new MessageService().insertMsg(m);
+		      
+		      response.setContentType("application/json");
+			  response.setCharacterEncoding("UTF-8"); 
+			  
+			  new Gson().toJson(result, response.getWriter());
+
+	      }
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

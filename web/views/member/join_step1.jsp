@@ -75,7 +75,7 @@ div.textarea textarea		{ width:800px; height:145px; overflow-y:auto; border:0; c
 ⑨ “중개서비스”라 함은 회사의 서비스(www.sharepeople.co.kr)을 통하며 회원들에게 제공하는 중개서비스 및 관련 부가서비스 일체를 말합니다. 
 ⑩ “안전거래서비스”라 함은 회사가 구매자의 결제대금의 보호를 위하여 일정 기간 동안 결제대금을 예치하는 서비스를 말합니다. </textarea>
 	</div>
-<p class="agreeCk"><input type="checkbox" name="strAgree"> 위의 이용약관에 동의합니다. <a href="#"><span>이용약관 전문보기</span></a></p>
+<p class="agreeCk"><input type="checkbox" name="strAgree" id="check1"> 위의 이용약관에 동의합니다. <a href="#"><span>이용약관 전문보기</span></a></p>
 
 <br><br><br>
 <h2 class="bor_none">개인정보처리방침 동의</h2>
@@ -86,34 +86,22 @@ div.textarea textarea		{ width:800px; height:145px; overflow-y:auto; border:0; c
 가. 회사가 개인정보를 수집하는 목적은 이용자의 신분과 서비스 이용의사를 확인하여 최적화되고 맞춤화된 서비스를 제공하기 위함입니다. 회사는 최초 회원가입 시 서비스의 본질적 기능을 수행하기 위해 반드시 필요한 최소한의 정보만을 수집하고 있으며 회사가 제공하는 서비스 이용에 따른 대금결제, 물품배송 및 환불 등에 필요한 정보를 추가로 수집할 수 있습니다. 나. 회사는 개인정보를 수집·이용목적 이외에 다른 용도로 이를 이용하거나 이용자의 동의 없이 제3자에게 이를 제공하지 않습니다.다. 회사는 다음과 같은 목적으로 개인정보를 수집하여 이용할 수 있습니다. 다만, 전자상거래 등에서의 소비자보호에 관한 법률, 국세기본법, 전자금융거래법 등 관련법령에 따라 주민등록번호 및 은행계좌번호의 수집·보관이 불가피한 경우나, 휴대폰 소액결제 등 요금정산을 위하여 이동전화번호정보의 수집·보관이 불가피한 경우에는 이용자에게 고지하여 해당 정보를 수집할 수 있습니다.</textarea>
 </div>
 
-<p class="agreeCk"><input type="checkbox" name="strAgree2"> 위의 개인정보처리방침에 동의합니다.<a href="#"><span>개인정보처리방침 전문보기</span></a></p>
+<p class="agreeCk"><input type="checkbox" name="strAgree2" id="check1"> 위의 개인정보처리방침에 동의합니다.<a href="#"><span>개인정보처리방침 전문보기</span></a></p>
 
 <br><br><br>
 	<div align="center">
 		<button id="next" onclick="goNext();">동의</button>
 	</div> 
-
+	<br><br>
 	<script>
-		function goNext() {
+	function goNext() {
+		if($("#check1:checked").length == 2){
 			location.href = "join_step2.jsp";
-
+		}else{
+			alert("약관에 전부 동의하셔야 됩니다.");
 		}
+	}
 	</script>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
 	<%@ include file="../common/footer.jsp"%>
 </body>
 </html>

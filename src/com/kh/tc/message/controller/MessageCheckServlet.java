@@ -22,9 +22,6 @@ public class MessageCheckServlet extends HttpServlet {
 		String userId = request.getParameter("userId");
 		String receveId = request.getParameter("receveId");
 		
-		System.out.println("serllll"+userId);
-		System.out.println("serllll"+receveId);
-		
 		int result = new MessageService().messageCheck(userId, receveId);
 		
 		response.setContentType("application/json");

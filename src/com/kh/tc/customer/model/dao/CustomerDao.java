@@ -1,6 +1,6 @@
 package com.kh.tc.customer.model.dao;
 
-import static com.kh.tc.common.JDBCTemplet.close;
+import static com.kh.tc.common.JDBCTemplet.*;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -32,7 +32,6 @@ public class CustomerDao {
 		ResultSet rset = null;
 
 		try {
-
 			String query = prop.getProperty("loginCheck");
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, userId);
@@ -58,12 +57,11 @@ public class CustomerDao {
 				loginUser.setDelete_reason(rset.getString("delete_reason"));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			close(pstmt);
 			close(rset);
-
+			
 		}
 		return loginUser;
 	}
@@ -235,5 +233,53 @@ public class CustomerDao {
 		}
 		return result;
 	}
-
+	public int idCheck(Connection con, String userId) {
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String query = prop.getProperty("idCheck");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, userId);
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				result = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		return result;
+	}
+	public int insertMember(Connection con, Customer c) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("insertMember");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, c.getC_id());
+			pstmt.setString(2, c.getC_pwd());
+			pstmt.setString(3, c.getC_email());
+			pstmt.setString(4, c.getC_name());
+			pstmt.setString(5, c.getC_type());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
 }

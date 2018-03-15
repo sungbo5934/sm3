@@ -127,10 +127,10 @@
    <!-- 새로고침 방지 -->
 
 
-
       <br> <br> <br> <br> <br> <br> <br>
       <br> <br> <br> <br> <br> <br> <br>
       <br> <br> <br>
       <%@ include file="../common/footer.jsp"%>
+	
 </body>
 </html>
