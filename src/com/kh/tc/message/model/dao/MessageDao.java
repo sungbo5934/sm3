@@ -2,8 +2,10 @@ package com.kh.tc.message.model.dao;
 
 import java.io.FileNotFoundException;
 
+
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
+import com.kh.tc.file.model.vo.File;
 import com.kh.tc.message.model.vo.Message;
 
 import static com.kh.tc.common.JDBCTemplet.*;
@@ -31,19 +34,21 @@ public class MessageDao {
 		}
 	}
 	
-	public int insertMessage(Connection con, String msgContent, String userId, String receveId) {
-		System.out.println("DAO 들어왔니?");
+	public int insertMessage(Connection con, Message m) {
 		PreparedStatement pstmt = null;
-		int result =0;
+		int result = 0;
 		
+		String me_code = "";
 		String query = prop.getProperty("insertMsg");
 		
 		try {
 			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, userId);
-			pstmt.setString(2, userId);
-			pstmt.setString(3, msgContent);
-			pstmt.setString(4, receveId);
+			pstmt.setString(1, m.getcCode());
+			pstmt.setString(2, m.getcCode());
+			pstmt.setString(3, m.getMsgContent());
+			pstmt.setString(4, m.getReceveCode());
+			pstmt.setString(5, m.getFile_code());
+			
 			
 			result = pstmt.executeUpdate();
 			
@@ -52,7 +57,7 @@ public class MessageDao {
 		}finally{
 			close(pstmt);
 		}
-		System.out.println("Daoresult : "+ result);
+		
 		return result;
 	}
 
@@ -123,7 +128,39 @@ public class MessageDao {
 		return result;
 	}
 
-	public ArrayList<Message> selectMessage(Connection con, String userId, String receveId) {
+	public Message selectMessage(Connection con, Message m) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		Message me = null;
+		String query = prop.getProperty("selectOneMessage");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, m.getMsgCode());
+		
+			rset = pstmt.executeQuery();
+			if(rset.next()){
+				me = new Message();
+				me.setcCode(rset.getString("c_code"));
+				me.setMsgCode(rset.getString("m_code"));
+				me.setMsgContent(rset.getString("m_content"));
+				me.setSendTime(rset.getString(4));
+				me.setCheck(rset.getString("check_1"));
+				me.setReceveCode(rset.getString("receive_code"));
+				me.setStarCheck(rset.getString("star_check"));
+				me.setFile_code(rset.getString("file_code"));
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally{
+			close(rset);
+			close(pstmt);
+		}
+		return me;
+	}
+
+	public ArrayList<Message> selectMessage2(Connection con, Message m) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<Message> meList = new ArrayList<Message>();
@@ -132,21 +169,21 @@ public class MessageDao {
 		
 		try {
 			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, userId);
-			pstmt.setString(2, receveId);
-			pstmt.setString(3, receveId);
-			pstmt.setString(4, userId);
+			pstmt.setString(1, m.getcCode());
+			pstmt.setString(2, m.getReceveCode());
+			pstmt.setString(3, m.getReceveCode());
+			pstmt.setString(4, m.getcCode());
 			rset = pstmt.executeQuery();
-			
 			while(rset.next()){
 				Message me = new Message();
 				me.setcCode(rset.getString("c_code"));
 				me.setMsgCode(rset.getString("m_code"));
 				me.setMsgContent(rset.getString("m_content"));
-				me.setSendTime(rset.getDate("send_time"));
+				me.setSendTime(rset.getString(4));
 				me.setCheck(rset.getString("check_1"));
 				me.setReceveCode(rset.getString("receive_code"));
 				me.setStarCheck(rset.getString("star_check"));
+				me.setFile_code(rset.getString("file_code"));
 				/*System.out.println("dao : "+me.getcCode());
 				System.out.println("dao : "+me.getMsgCode());
 				System.out.println("dao : "+me.getMsgContent());
@@ -163,7 +200,7 @@ public class MessageDao {
 		}
 		return meList;
 	}
-
+	
 	public HashMap<String, String> selectAllMessageRoom1(Connection con, String userId) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -209,10 +246,10 @@ public class MessageDao {
 		
 		ArrayList<Message> meList = new ArrayList<Message>();
 		
-		System.out.println("daoList : "+ userId);
+	/*	System.out.println("daoList : "+ userId);
 		System.out.println("daoList : "+ list.get(0));
 		System.out.println("daoList : "+ list.get(1));
-		System.out.println("daoList : "+ list.get(2));
+		System.out.println("daoList : "+ list.get(2));*/
 		try {
 			for(int i =0; i < list.size(); i++){
 				pstmt = con.prepareStatement(query);
@@ -228,7 +265,7 @@ public class MessageDao {
 					m.setcCode(rset.getString(2));
 					m.setMsgCode(rset.getString(3));
 					m.setMsgContent(rset.getString(4));
-					m.setSendTime(rset.getDate("m_s"));
+					m.setSendTime(rset.getString("m_s"));
 					m.setCheck(rset.getString(6));
 					m.setReceveCode(rset.getString(7));
 					m.setStarCheck(rset.getString(8));
@@ -253,10 +290,10 @@ public class MessageDao {
 		
 		ArrayList<Message> meList = new ArrayList<Message>();
 		
-		System.out.println("daoList : "+ userId);
+		/*System.out.println("daoList : "+ userId);
 		System.out.println("daoList : "+ list.get(0));
 		System.out.println("daoList : "+ list.get(1));
-		System.out.println("daoList : "+ list.get(2));
+		System.out.println("daoList : "+ list.get(2));*/
 		try {
 			for(int i =0; i < list.size(); i++){
 				pstmt = con.prepareStatement(query);
@@ -272,7 +309,7 @@ public class MessageDao {
 					m.setcCode(rset.getString(2));
 					m.setMsgCode(rset.getString(3));
 					m.setMsgContent(rset.getString(4));
-					m.setSendTime(rset.getDate("m_s"));
+					m.setSendTime(rset.getString("m_s"));
 					m.setCheck(rset.getString(6));
 					m.setReceveCode(rset.getString(7));
 					m.setStarCheck(rset.getString(8));
@@ -297,10 +334,6 @@ public class MessageDao {
 		
 		ArrayList<Message> meList = new ArrayList<Message>();
 		
-		System.out.println("daoList : "+ userId);
-		System.out.println("daoList : "+ list.get(0));
-		System.out.println("daoList : "+ list.get(1));
-		System.out.println("daoList : "+ list.get(2));
 		try {
 			for(int i =0; i < list.size(); i++){
 				pstmt = con.prepareStatement(query);
@@ -316,7 +349,7 @@ public class MessageDao {
 					m.setcCode(rset.getString(2));
 					m.setMsgCode(rset.getString(3));
 					m.setMsgContent(rset.getString(4));
-					m.setSendTime(rset.getDate("m_s"));
+					m.setSendTime(rset.getString("m_s"));
 					m.setCheck(rset.getString(6));
 					m.setReceveCode(rset.getString(7));
 					m.setStarCheck(rset.getString(8));
@@ -332,6 +365,152 @@ public class MessageDao {
 		
 		return meList;
 	}
+
+	public int deleteMessage(Connection con, String userId, String[] receveId) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("deleteMessage");
+		try {
+			pstmt = con.prepareStatement(query);
+			for(int i = 0; i < receveId.length; i++){
+				pstmt.setString(1, userId);
+				pstmt.setString(2, receveId[i]);
+				pstmt.setString(3, receveId[i]);
+				pstmt.setString(4, userId);
+				
+				result += pstmt.executeUpdate();
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally{
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int insertFile(Connection con, File file1, Message m) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		ResultSet rset = null;
+		String query = prop.getProperty("insertFileMessage");
+		System.out.println("insertFileMessageDao 3");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, m.getcCode());
+			pstmt.setString(2, file1.getFile_root());
+			pstmt.setString(3, file1.getOr_file_name());
+			pstmt.setString(4, file1.getSec_file_name());
+			pstmt.setString(5, m.getReceveCode());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally{
+			close(pstmt);
+		}
+		
+		
+		return result;
+	}
+
+	public File selectOneServlet(Connection con, String fileCode) {
+		PreparedStatement pstmt = null;
+		ResultSet rset= null;
+		File file = null;
+		String query = prop.getProperty("selectFileCode");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, fileCode);
+			rset = pstmt.executeQuery();
+			if(rset.next()){
+				file = new File();
+				file.setFile_code(rset.getString("FILE_CODE"));
+				file.setF_from(rset.getString("F_FROM"));
+				file.setFile_root(rset.getString("FILE_ROOT"));
+				file.setOr_file_name(rset.getString("OR_FILE_NAME"));
+				file.setC_id(rset.getString("C_ID"));
+				file.setSec_file_name(rset.getString("SEC_FILE_NAME"));
+				file.setUpdate_time(rset.getString("update_time"));
+				file.setReceveId(rset.getString("update_time"));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			close(pstmt);
+			close(rset);
+		}
+		return file;
+	}
+
+	public File selectOneFile(Connection con, File file1) {
+		PreparedStatement pstmt = null;
+		ResultSet rset= null;
+		File file = new File();
+		String query = prop.getProperty("selectOneFile");
+		
+		String sec = file1.getSec_file_name();
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, sec);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				file.setC_id(rset.getString("c_id"));
+				file.setF_from(rset.getString("f_from"));
+				file.setFile_code(rset.getString("file_code"));
+				file.setFile_root(rset.getString("file_root"));
+				file.setOr_file_name(rset.getString("or_file_name"));
+				file.setReceveId(rset.getString("receve_id"));
+				file.setSec_file_name(rset.getString("sec_file_name"));
+				file.setUpdate_time(rset.getString("update_time"));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return file;
+	}
+
+	public File selectFileMessage(Connection con, String fileCode) {
+		PreparedStatement pstmt = null;
+		ResultSet rset= null;
+		File file = new File();
+		String query = prop.getProperty("selectFileCode");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, fileCode);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				file.setC_id(rset.getString("c_id"));
+				file.setF_from(rset.getString("f_from"));
+				file.setFile_code(rset.getString("file_code"));
+				file.setFile_root(rset.getString("file_root"));
+				file.setOr_file_name(rset.getString("or_file_name"));
+				file.setReceveId(rset.getString("receve_id"));
+				file.setSec_file_name(rset.getString("sec_file_name"));
+				file.setUpdate_time(rset.getString(7));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return file;
+	}
+
+	
+
+
+	
 
 
 

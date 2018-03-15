@@ -25,8 +25,6 @@ public class SelectAllMessageRoomServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String userId = request.getParameter("userId");
-		System.out.println("room"+userId);
-		
 		
 		HashMap<String, String> hMap = new MessageService().selectAllMessageRoom(userId);
 		
@@ -35,20 +33,18 @@ public class SelectAllMessageRoomServlet extends HttpServlet {
 		
 		ArrayList<String> list = new ArrayList<String>();
 		
-		java.util.Iterator<String> itr = hMap.keySet().iterator();
-		while (itr.hasNext()) {
-	    String key = (String)itr.next();
-	    list.add(key);
+		if(hMap != null){
+			java.util.Iterator<String> itr = hMap.keySet().iterator();
+			while (itr.hasNext()) {
+			String key = (String)itr.next();
+	    	list.add(key);
+			}
+			
+	    	ArrayList<Message> meList = null;
+	    	meList = new MessageService().selectMessageRoom(userId, list); 
+			
+			new Gson().toJson(meList, response.getWriter());
 		}
-	    for(int i = 0; i < list.size(); i++){	    	
-	    	System.out.println(list.get(i));
-	    }
-	    ArrayList<Message> meList = null;
-	    meList = new MessageService().selectMessageRoom(userId, list); 
-		for (int i = 0; i < meList.size(); i++) {
-			System.out.println("meList : "+meList.get(i));			
-		}
-	    new Gson().toJson(meList, response.getWriter());
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

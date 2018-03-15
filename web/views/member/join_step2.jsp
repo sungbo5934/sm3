@@ -193,6 +193,17 @@
 </head>
 <body>
 	<%@ include file="../common/header.jsp"%>
+	
+	<script>
+	
+	
+	
+	$(".cancel123").click(function(){
+		location.href = "Realmain.jsp";
+	});
+	
+	</script>
+	
 	<h2 style="margin-left:400px;">회원가입</h2>
 	<hr>
 	<br><br> 	
@@ -200,164 +211,111 @@
 	<div align="center">
 		<table>
 			<tr>
-				<th class="step" id="step1"><h4>STEP1</h4></th>
-				<th class="step" id="step2"><h4>
+				<th class="step" id="step1">
+					<h4>STEP1</h4>
+				</th>
+				<th class="step" id="step2">
+					<h4>
 						<strong>STEP2</strong>
-					</h4></th>
+					</h4>
+				</th>
 			</tr>
 		</table>
 	</div>
 	
-	
 	<div id="A_Container_C">
 		<form name="joinform" action="?member2=modifyok&amp;" method="post"
-			enctype="multipart/form-data">
+			enctype="multipart/form-data" onsubmit="return join();">
 			<table class="person_change" cellspacing="0">
 				<input type="hidden" name="intseq" value="3018">
 				<colgroup>
 					<col style="width: 150px">
 					<col>
 				</colgroup>
-				<tbody>
+		    	<tbody>
 					<tr>
 						<th>회원종류</th>
-						<td><select class="title">
-								<option>일반회원</option>
-								<option>기업회원</option>
-						</select></td>
+						<td>
+							<select class="title">
+								<option value="일반회원">일반회원</option>
+								<option value="기업회원">기업회원</option>
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<th>이름</th>
-						<td><input type="text" name="userName" maxlength="14"></td>
+						<td>
+							<input type="text" name="userName" maxlength="14" class="userName" id="userName">
+						</td>
 					</tr>
 					<tr>
 						<th>아이디 *</th>
-						<td><input type="text" name="userId" maxlength="14"></td>
+						<td>
+							<input type="text" name="userId" maxlength="25" class="userId" id="userId">
+							<button onclick='idcheck();'>ID중복검사</button>
+						</td>
 					</tr>
 					<tr>
 						<th>비밀번호 *</th>
-						<td><input type="password" name="strPwd" id="strPwd">
-							<b class="font_12no66">* 4~15자의 영문자, 숫자조합</b></td>
+						<td>
+							<input type="password" name="strPwd1" id="strPwd1">
+							<b class="font_12no66">* 4~15자의 영문자, 숫자조합</b>
+						</td>
 					</tr>
 					<tr>
 						<th>비밀번호 확인</th>
-						<td><input type="password" name="strPwd2"></td>
+						<td>
+							<input type="password" name="strPwd2" id="strPwd2">
+							<button id="pwCheck">비밀번호 확인</button>
+						</td>
 					</tr>
 					
 					<tr>
-						<th>이메일 *</th>
-						<td><input type="text" maxlength="25" name="strEmail1"
-							value="" onkeyup="SetEmailAddress_strEmail(this.form);"
-							style="width: 100px;"> @ <input type="text"
-							maxlength="25" name="strEmail2a" value=""
-							onkeyup="SetEmailAddress_strEmail(this.form);"
-							style="width: 100px;" readonly=""> <select
-							style="width: 82px;" name="strEmail2b"
-							onchange="changeEmailType_strEmail(this.form, this.value);SetEmailAddress_strEmail(this.form);">
-								<option value="">선택</option>
-								<option value="naver.com" selected="">naver.com</option>
-								<option value="daum.net">daum.net</option>
-								<option value="hotmail.com">hotmail.com</option>
-								<option value="nate.com">nate.com</option>
-								<option value="yahoo.co.kr">yahoo.co.kr</option>
-								<option value="paran.com">paran.com</option>
-								<option value="empas.com">empas.com</option>
-								<option value="dreamwiz.com">dreamwiz.com</option>
-								<option value="freechal.com">freechal.com</option>
-								<option value="lycos.co.kr">lycos.co.kr</option>
-								<option value="korea.com">korea.com</option>
-								<option value="gmail.com">gmail.com</option>
-								<option value="hanmir.com">hanmir.com</option>
-								<option value="직접입력">직접입력</option>
-						</select> <input type="hidden" name="strEmail" value="wntmd1215@naver.com">
-							<script language="javascript">
-							<!--
-								function changeEmailType_strEmail(frm,
-										emailType) {
-									frm.strEmail2a.value = "";
-									if (emailType == "직접입력") {
-										frm.strEmail2a.readOnly = false;
-										frm.strEmail2a.focus();
-									} else {
-										frm.strEmail2a.readOnly = true;
-										frm.strEmail2a.value = emailType;
-									}
-								}
-								function SetEmailAddress_strEmail(frm) {
-									frm.strEmail.value = frm.strEmail1.value
-											+ "@" + frm.strEmail2a.value;
-								}
-							//-->
-							</script></td>
-					</tr>
-					<tr>
-						<th>휴대전화 *</th>
-						<td><select style="width: 82px;" name="strMobil1"
-							onchange="SetHandPhone_strMobil(this.form);">
-								<option value="010" selected="">010</option>
-								<option value="011">011</option>
-								<option value="016">016</option>
-								<option value="017">017</option>
-								<option value="018">018</option>
-								<option value="019">019</option>
-						</select> - <input style="width: 80px;" type="text" maxlength="4" size="4"
-							name="strMobil2" value=""
-							onkeyup="if(isNaN(this.value))this.value='';SetHandPhone_strMobil(this.form);">
-							- <input style="width: 80px;" type="text" maxlength="4" size="4"
-							name="strMobil3" value=""
-							onkeyup="if(isNaN(this.value))this.value='';SetHandPhone_strMobil(this.form);">
-							<input type="hidden" name="strMobil" value=""> <script
-								language="javascript">
-							<!--
-								function SetHandPhone_strMobil(frm) {
-									frm.strMobil.value = frm.strMobil1.value
-											+ "-" + frm.strMobil2.value + "-"
-											+ frm.strMobil3.value;
-								}
-							//-->
-							</script></td>
-					</tr>
-					<!-- <tr>
-						<th rowspan="2">주소</th>
-						<td><input type="text" id="strZip" name="strZip"
-							value="06120  " class="address" placeholder="우편번호" readonly="">
-							<a href="#" id="strZip2" class="btn_joinS"
-							onclick="openDaumZipAddress();">우편번호</a></td>
-					</tr>
-					<tr>
-						<td><input type="text" id="strAddr1" name="strAddr1"
-							value="서울 강남구 강남대로 476" class="address_detail01" placeholder="주소"
-							readonly=""> <br> <input type="text" name="strAddr2"
-							value="kh정보교육원" style="margin-top: 5px; margin-left: 0px;"
-							class="address_detail02" placeholder="나머지주소"></td>
-					</tr>
- -->
-					<tr>
-						<th>계좌번호</th>
-						<td><select class="select" name="bankname" id="bankname">
-								<option value="0">선택</option>
-								<option value="기업은행">기업은행</option>
-								<option value="국민은행">국민은행</option>
-								<option value="우리은행">우리은행</option>
-								<option value="신한은행" selected="">신한은행</option>
-								<option value="KEB하나은행">KEB하나은행</option>
-								<option value="농협은행">농협은행</option>
-								<option value="수협">수협</option>
-								<option value="신협">신협</option>
-								<option value="광주은행">광주은행</option>
-								<option value="부산은행">부산은행</option>
-								<option value="대구은행">대구은행</option>
-								<option value="우체국">우체국</option>
-						</select> <input name="bankaddr" class="input01" type="text" value=""
-							size="40" maxlength="40"></td>
-					</tr>
-					<tr>
-						<th>예금주</th>
-						<td><input type="text" name="bankhuman" class="input01"
-							value=""></td>
-					</tr>
-
-
+                  <th>이메일 *</th>
+                  <td><input type="text" id="email1" maxlength="25" name="strEmail1"
+                     value="" onkeyup="SetEmailAddress_strEmail(this.form);"
+                     style="width: 100px;"> @ <input type="text" id="email2"
+                     maxlength="25" name="strEmail2a" value=""
+                     onkeyup="SetEmailAddress_strEmail(this.form);"
+                     style="width: 100px;" readonly=""> <select
+                     style="width: 82px;" name="strEmail2b"
+                     onchange="changeEmailType_strEmail(this.form, this.value);SetEmailAddress_strEmail(this.form);">
+                        <option value="">선택</option>
+                        <option value="naver.com" selected="">naver.com</option>
+                        <option value="daum.net">daum.net</option>
+                        <option value="hotmail.com">hotmail.com</option>
+                        <option value="nate.com">nate.com</option>
+                        <option value="yahoo.co.kr">yahoo.co.kr</option>
+                        <option value="paran.com">paran.com</option>
+                        <option value="empas.com">empas.com</option>
+                        <option value="dreamwiz.com">dreamwiz.com</option>
+                        <option value="freechal.com">freechal.com</option>
+                        <option value="lycos.co.kr">lycos.co.kr</option>
+                        <option value="korea.com">korea.com</option>
+                        <option value="gmail.com">gmail.com</option>
+                        <option value="hanmir.com">hanmir.com</option>
+                        <option value="직접입력">직접입력</option>
+                  </select> <input type="hidden" name="strEmail" value="wntmd1215@naver.com">
+                     <script language="javascript">
+                     <!--
+                        function changeEmailType_strEmail(frm,
+                              emailType) {
+                           frm.strEmail2a.value = "";
+                           if (emailType == "직접입력") {
+                              frm.strEmail2a.readOnly = false;
+                              frm.strEmail2a.focus();
+                           } else {
+                              frm.strEmail2a.readOnly = true;
+                              frm.strEmail2a.value = emailType;
+                           }
+                        }
+                        function SetEmailAddress_strEmail(frm) {
+                           frm.strEmail.value = frm.strEmail1.value
+                                 + "@" + frm.strEmail2a.value;
+                        }
+                     //-->
+                     </script></td>
+               </tr>
 				</tbody>
 			</table>
 			<div style="margin-left:440px;">
@@ -370,29 +328,129 @@
 				<tbody>
 					<tr>
 						<th class="bor_top4ff">메일링 수신설정 *</th>
-						<td class="send_check"><input name="bitNews" class="sns_send"
-							type="radio" value="true"> <span>수신함</span> <input
-							name="bitNews" class="sns_send" type="radio" checked=""
-							value="false"> <span>수신안함</span></td>
+						<td class="send_check">
+							<input name="bitNews" class="sns_send" type="radio" value="true"> 
+							<span>수신함</span> 
+							<input name="bitNews" class="sns_send" type="radio" checked="" value="false">
+							<span>수신안함</span>
+						</td>
 					</tr>
 					<tr>
 						<th>SMS 수신설정</th>
-						<td class="send_check"><input name="bitNews2"
-							class="sns_send" type="radio" value="True"> <span>수신함</span>
-							<input name="bitNews2" class="sns_send" type="radio" checked=""
-							value="False"> <span>수신안함</span></td>
+						<td class="send_check">
+							<input name="bitNews2" class="sns_send" type="radio" value="True"> 
+							<span>수신함</span>
+							<input name="bitNews2" class="sns_send" type="radio" checked="" value="False"> 
+							<span>수신안함</span>
+						</td>
 					</tr>
 				</tbody>
 			</table>
+			
 			</div>
 			<div class="btn_joinL">
-				<a href="login.jsp" ><span>수정하기</span></a>
-				<input type="reset" value="취소하기">
+				<input type="submit" value="가입하기" class="join123">
+				<input type="reset" value="취소하기" class="cancel123">
 			</div>
 		</form>
 	</div>
 	
-	<br><br><br><br><br><br><br><br><br><br><br><br>
+	<br><br><br>
 	<%@ include file="../common/footer.jsp"%>
+	<script>
+	var count=1;
+	
+	function join(){
+		if(count==2){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	function idcheck(){
+		var userId = $(".userId").val();
+		$.ajax({
+			url:"/p/idCheck.me",
+			data:{userId:userId},
+			type:"post", 
+			success:function(data){
+				
+				if(data=="1"){
+		               alert("아이디가 중복됩니다.");
+		               return false;
+		            }else{
+		               joinform.userId.readOnly = true;
+			           alert("사용가능한 아이디 입니다.");
+			           count=1;
+			           return false;		               
+		            } 
+			},
+			error:function(request,status,error){
+		        alert("실패");
+		       }
+
+			
+		})
+		
+	}
+	
+	$("#pwCheck").click(function(){
+		var password1 = $("#strPwd1").val();
+		var password2 = $("#strPwd2").val();
+		if(password1 != password2){
+			alert("비밀번호가 일치하지 않습니다.");
+			$("#strPwd1").val('');
+			return false;
+		}else if(!/^[a-zA-Z0-9]{8,15}$/.test(password1)){
+			alert("숫자와 영문자 조합으로 8~15자리를 사용해야 합니다.");
+			$("#strPwd1").val('');
+			$("#strPwd2").val('');
+			return false;
+		}else{
+			alert("사용 가능한 비밀번호 입니다.");
+			joinform.strPwd1.readOnly = true;
+			joinform.strPwd2.readOnly = true;
+			count = 2;
+			return false;
+		}
+	});
+	
+	$(function(){$(".join123").click(function(){
+		var mType = $(".title:selected").val();
+		var mName = $(".userName").val();
+		if($(".userName").text() != null){
+			console.log("잉 : "+mName);
+		}else{
+			alert("이름을 입력하셔야 합니다.");
+			return false;
+		}	
+		var userId = $(".userId").val();
+		var password = $("#strPwd1").val();
+		if($("#email1").val() != null){
+			var email1 = $("#email1").val();//
+			var email2 = $("#email2").val();//
+			var email = email1 + '@' +email2;
+		}else{
+			alert("이메일을 입력하셔야 합니다.");
+			return false;
+		}
+		$.ajax({
+			url:"/p/insertMember.me",
+			type:"get",
+			data:{mType:mType, mName:mName, userId:userId, password:password, email:email},
+			success:function(data){
+				console.log(data);
+				alert(data+"님 환영합니다.\n로그인 화면으로 이동합니다.");
+				location.href = "login.jsp";
+			},
+			error:function(msg){
+				alert("회원가입 에러!");
+			}
+		});
+	});
+	});
+	
+	</script>
 </body>
 </html>

@@ -26,15 +26,14 @@ public class SelectAllMessageServlet extends HttpServlet {
 		String userId = request.getParameter("userId");
 		String receveId = request.getParameter("receveId");
 		
-		System.out.println("여기가 서블릿 : "+userId);
-		System.out.println("여기가 서블릿 : "+receveId);
-		
-		ArrayList<Message> meList = new MessageService().selectAllMessage(userId, receveId);
-	      
+		Message m  = new Message();
+		m.setcCode(userId);
+		m.setReceveCode(receveId);
+		ArrayList<Message> meList = new MessageService().selectAllMessage(m);
 		 
+		System.out.println("yaya : "+ meList);
 	    response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8"); 
-		  
 		  
 		new Gson().toJson(meList, response.getWriter());
 	}

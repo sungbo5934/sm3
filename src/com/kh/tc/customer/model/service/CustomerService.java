@@ -1,9 +1,7 @@
 package com.kh.tc.customer.model.service;
 
-import static com.kh.tc.common.JDBCTemplet.close;
-import static com.kh.tc.common.JDBCTemplet.commit;
-import static com.kh.tc.common.JDBCTemplet.getConnection;
-import static com.kh.tc.common.JDBCTemplet.rollback;
+import static com.kh.tc.common.JDBCTemplet.*;
+
 
 import java.sql.Connection;
 
@@ -99,6 +97,29 @@ public class CustomerService {
 		if (result > 0) {
 			commit(con);
 		} else {
+			rollback(con);
+		}
+		close(con);
+		return result;
+	}
+	public int idCheck(String userId) {
+		Connection con = getConnection();
+		
+		int result = new CustomerDao().idCheck(con, userId);
+		
+		close(con);
+		
+		return result;
+	}
+
+	public int insertmember(Customer c) {
+		Connection con = getConnection();
+		
+		int result = new CustomerDao().insertMember(con, c);
+		
+		if(result > 0) {
+			commit(con);
+		}else {
 			rollback(con);
 		}
 		close(con);

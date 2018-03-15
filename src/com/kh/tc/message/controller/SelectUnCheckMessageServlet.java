@@ -24,7 +24,6 @@ public class SelectUnCheckMessageServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String userId = request.getParameter("userId");
-		System.out.println("star"+userId);
 		
 		HashMap<String, String> hMap = new MessageService().selectAllMessageRoom(userId);
 		
@@ -32,21 +31,20 @@ public class SelectUnCheckMessageServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8"); 
 		
 		ArrayList<String> list = new ArrayList<String>();
-		
-		java.util.Iterator<String> itr = hMap.keySet().iterator();
-		while (itr.hasNext()) {
-	    String key = (String)itr.next();
-	    list.add(key);
+		if(hMap != null){
+			java.util.Iterator<String> itr = hMap.keySet().iterator();
+			while (itr.hasNext()) {
+				String key = (String)itr.next();
+				list.add(key);
+			}
+			for(int i = 0; i < list.size(); i++){	    	
+			}
+			ArrayList<Message> meList = null;
+			meList = new MessageService().selectUnCheckMessageRoom(userId, list); 
+			for (int i = 0; i < meList.size(); i++) {
+			}
+			new Gson().toJson(meList, response.getWriter());
 		}
-	    for(int i = 0; i < list.size(); i++){	    	
-	    	System.out.println(list.get(i));
-	    }
-	    ArrayList<Message> meList = null;
-	    meList = new MessageService().selectUnCheckMessageRoom(userId, list); 
-		for (int i = 0; i < meList.size(); i++) {
-			System.out.println("meList : "+meList.get(i));			
-		}
-	    new Gson().toJson(meList, response.getWriter());
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

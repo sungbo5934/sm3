@@ -26,11 +26,11 @@ public class SelectOneMessageServlet extends HttpServlet {
 		String userId = request.getParameter("userId");
 		String receveId = request.getParameter("receveId");
 		
-		System.out.println("여기가 서블릿 : "+userId);
-		System.out.println("여기가 서블릿 : "+receveId);
-		
-		ArrayList<Message> meList = new MessageService().selectAllMessage(userId, receveId);
-	      
+		Message m = new Message();
+		m.setcCode(userId);
+		m.setReceveCode(receveId);
+		ArrayList<Message> meList = new MessageService().selectAllMessage(m);
+	     
 		String page = null;
 		if(meList != null){
 			page = "views/message/messageDetail.jsp";
